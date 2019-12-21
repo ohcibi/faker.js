@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/camelcase": ["error", { "allow": ["random_ua", "seed_array"]}]
+  }
+}

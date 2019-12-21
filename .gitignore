@@ -20,3 +20,8 @@ reports/
 # meteor specific
 .build*
 versions.json
+
+alog
+
+/dist/
+/lib/
