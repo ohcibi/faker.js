@@ -35,7 +35,8 @@
   "license": "MIT",
   "main": "lib/faker.js",
   "dependencies": {
-    "mersenne": "0.0.4"
+    "mersenne": "0.0.4",
+    "random-ua": "0.0.6"
   },
   "files": [
     "lib/**/*"
