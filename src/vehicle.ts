@@ -4,9 +4,8 @@
  */
 
 import { color } from 'commerce';
+import { getStringArray } from 'definitions';
 import { alpha, alphaNumeric, arrayElement, number } from 'random';
-
-declare const faker: { definitions: any };
 
 /**
  * manufacturer
@@ -14,13 +13,8 @@ declare const faker: { definitions: any };
  * @method faker.vehicle.manufacturer
  */
 export function manufacturer(): string {
-  return arrayElement(faker.definitions.vehicle.manufacturer);
+  return arrayElement(getStringArray('vehicle.manufacturer'));
 }
-
-manufacturer.schema = {
-  description: 'Generates a manufacturer name.',
-  sampleResults: ['Ford', 'Jeep', 'Tesla']
-};
 
 /**
  * model
@@ -28,13 +22,8 @@ manufacturer.schema = {
  * @method faker.vehicle.model
  */
 export function model(): string {
-  return arrayElement(faker.definitions.vehicle.model);
+  return arrayElement(getStringArray('vehicle.model'));
 }
-
-model.schema = {
-  description: 'Generates a vehicle model.',
-  sampleResults: ['Explorer', 'Camry', 'Ranchero']
-};
 
 /**
  * vehicle
@@ -45,24 +34,14 @@ export function vehicle(): string {
   return `${manufacturer()} ${model()}`;
 }
 
-vehicle.schema = {
-  description: 'Generates a random vehicle.',
-  sampleResults: ['BMW Explorer', 'Ford Camry', 'Lamborghini Ranchero']
-};
-
 /**
  * type
  *
  * @method faker.vehicle.type
  */
 export function type(): string {
-  return arrayElement(faker.definitions.vehicle.type);
+  return arrayElement(getStringArray('vehicle.type'));
 }
-
-type.schema = {
-  description: 'Generates a vehicle type.',
-  sampleResults: ['Coupe', 'Convertable', 'Sedan', 'SUV']
-};
 
 /**
  * fuel
@@ -70,13 +49,8 @@ type.schema = {
  * @method faker.vehicle.fuel
  */
 export function fuel(): string {
-  return arrayElement(faker.definitions.vehicle.fuel);
+  return arrayElement(getStringArray('vehicle.fuel'));
 }
-
-fuel.schema = {
-  description: 'Generates a fuel type.',
-  sampleResults: ['Electric', 'Gasoline', 'Diesel']
-};
 
 /**
  * vin
@@ -92,11 +66,6 @@ export function vin(): string {
   ) // return five digit #
     .toUpperCase();
 }
-
-vin.schema = {
-  description: 'Generates a valid VIN number.',
-  sampleResults: ['YV1MH682762184654', '3C7WRMBJ2EG208836']
-};
 
 export default {
   color,
