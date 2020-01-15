@@ -8,7 +8,6 @@ import { firstName, lastName } from 'name';
 import { arrayElement, number } from 'random';
 
 declare const faker: { definitions: any };
-declare function f(str: string): any;
 /**
  * Generates random zipcode from format. If format is not specified, the
  * locale's zip format is used.
@@ -45,34 +44,6 @@ export function zipCodeByState(state: string): string {
     return `${number(zipRange)}`;
   }
   return zipCode();
-}
-
-/**
- * Generates a random localized city name. The format string can contain any
- * method provided by faker wrapped in `{{}}`, e.g. `{{name.firstName}}` in
- * order to build the city name.
- *
- * If no format string is provided one of the following is randomly used:
- *
- * * `{{address.cityPrefix}} {{name.firstName}}{{address.citySuffix}}`
- * * `{{address.cityPrefix}} {{name.firstName}}`
- * * `{{name.firstName}}{{address.citySuffix}}`
- * * `{{name.lastName}}{{address.citySuffix}}`
- *
- * @method faker.address.city
- * @param {String} format
- */
-export function city(format?: string): string {
-  if (!format) {
-    format = arrayElement([
-      '{{address.cityPrefix}} {{name.firstName}}{{address.citySuffix}}',
-      '{{address.cityPrefix}} {{name.firstName}}',
-      '{{name.firstName}}{{address.citySuffix}}',
-      '{{name.lastName}}{{address.citySuffix}}'
-    ]);
-  }
-
-  return f(format);
 }
 
 /**
@@ -355,6 +326,31 @@ export function nearbyGPSCoordinate(
     isMetric
   );
   return [parseFloat(randomCoord[0].toFixed(4)), parseFloat(randomCoord[1].toFixed(4))];
+}
+
+/**
+ * Generates a random localized city name. The format string can contain any
+ * method provided by faker wrapped in `{{}}`, e.g. `{{name.firstName}}` in
+ * order to build the city name.
+ *
+ * There is no format string parameter anymore. Use string interpolation for such use cases.
+ *
+ * ```
+ * import { citySuffix } from 'address';
+ * import { firstName } from 'name';
+ *
+ * const cityName = `${firstName()} ${citySuffix()}`;
+ * ```
+ *
+ * @method faker.address.city
+ */
+export function city(): string {
+  return arrayElement([
+    (): string => `${cityPrefix()} ${firstName()}${citySuffix()}`,
+    (): string => `${cityPrefix()} ${firstName()}`,
+    (): string => `${firstName()}${citySuffix()}`,
+    (): string => `${lastName()}${citySuffix()}`
+  ])();
 }
 
 export default {

@@ -8,30 +8,12 @@ import { arrayElement, number, words } from 'random';
 declare const faker: { definitions: any; fake: (arg0: string) => string };
 
 /**
- * generates a file name with extension or optional type
- *
- * @method faker.system.fileName
- * @param {string} ext
- * @param {string} type
- */
-export function fileName(): string {
-  let str = faker.fake('{{random.words}}.{{system.fileExt}}');
-  str = str.replace(/ /g, '_');
-  str = str.replace(/\,/g, '_');
-  str = str.replace(/\-/g, '_');
-  str = str.replace(/\\/g, '_');
-  str = str.replace(/\//g, '_');
-  str = str.toLowerCase();
-  return str;
-}
-
-/**
  * fileExt
  *
  * @method faker.system.fileExt
  * @param {string} mimeType
  */
-export function fileExt(mimeType: string): string {
+export function fileExt(mimeType = ''): string {
   const exts: string[] = [];
   const mimes = faker.definitions.system.mimeTypes;
 
@@ -47,6 +29,22 @@ export function fileExt(mimeType: string): string {
     }
   });
   return arrayElement(exts);
+}
+
+/**
+ * generates a file name with extension or optional type
+ *
+ * @method faker.system.fileName
+ */
+export function fileName(): string {
+  let str = `${words()}.${fileExt()}`;
+  str = str.replace(/ /g, '_');
+  str = str.replace(/\,/g, '_');
+  str = str.replace(/\-/g, '_');
+  str = str.replace(/\\/g, '_');
+  str = str.replace(/\//g, '_');
+  str = str.toLowerCase();
+  return str;
 }
 
 /**

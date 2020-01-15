@@ -3,24 +3,10 @@
  * @module vehicle
  */
 
+import { color } from 'commerce';
 import { alpha, alphaNumeric, arrayElement, number } from 'random';
 
-declare const faker: { fake: (arg0: string) => string; definitions: any };
-const fake = faker.fake;
-
-/**
- * vehicle
- *
- * @method faker.vehicle.vehicle
- */
-export function vehicle(bla: any): string {
-  return fake('{{vehicle.manufacturer}} {{vehicle.model}}');
-}
-
-vehicle.schema = {
-  description: 'Generates a random vehicle.',
-  sampleResults: ['BMW Explorer', 'Ford Camry', 'Lamborghini Ranchero']
-};
+declare const faker: { definitions: any };
 
 /**
  * manufacturer
@@ -48,6 +34,20 @@ export function model(): string {
 model.schema = {
   description: 'Generates a vehicle model.',
   sampleResults: ['Explorer', 'Camry', 'Ranchero']
+};
+
+/**
+ * vehicle
+ *
+ * @method faker.vehicle.vehicle
+ */
+export function vehicle(): string {
+  return `${manufacturer()} ${model()}`;
+}
+
+vehicle.schema = {
+  description: 'Generates a random vehicle.',
+  sampleResults: ['BMW Explorer', 'Ford Camry', 'Lamborghini Ranchero']
 };
 
 /**
@@ -96,20 +96,6 @@ export function vin(): string {
 vin.schema = {
   description: 'Generates a valid VIN number.',
   sampleResults: ['YV1MH682762184654', '3C7WRMBJ2EG208836']
-};
-
-/**
- * color
- *
- * @method faker.vehicle.color
- */
-export function color(): string {
-  return fake('{{commerce.color}}');
-}
-
-color.schema = {
-  description: 'Generates a color',
-  sampleResults: ['red', 'white', 'black']
 };
 
 export default {
