@@ -3,11 +3,10 @@
  * @module finance
  */
 
+import { getStringArray, getStringObject, getDefinition } from 'definitions';
 import { replaceCreditCardSymbols, replaceSymbols, replaceSymbolWithNumber } from 'helpers';
 import { arrayElement, boolean, hexaDecimal, number, objectElement } from 'random';
 import ibanLib from 'iban';
-
-declare const faker: { definitions: any };
 
 /**
  * account
@@ -30,7 +29,7 @@ export function account(length = 8): string {
  * @method faker.finance.accountName
  */
 export function accountName(): string {
-  return `${arrayElement(faker.definitions.finance.account_type)} Account`;
+  return `${arrayElement(getStringArray('finance.account_type'))} Account`;
 }
 
 /**
@@ -106,7 +105,7 @@ export function amount(min = 0, max = 1000, dec = 2, symbol = ''): string {
  * @method faker.finance.transactionType
  */
 export function transactionType(): string {
-  return arrayElement(faker.definitions.finance.transaction_type);
+  return arrayElement(getStringArray('finance.transaction_type'));
 }
 
 /**
@@ -115,7 +114,8 @@ export function transactionType(): string {
  * @method faker.finance.currencyCode
  */
 export function currencyCode(): string {
-  return objectElement(faker.definitions.finance.currency)['code'];
+  const definition = objectElement(getStringObject('finance.currency')) as { [k: string]: string };
+  return definition['code'];
 }
 
 /**
@@ -124,7 +124,7 @@ export function currencyCode(): string {
  * @method faker.finance.currencyName
  */
 export function currencyName(): string {
-  return objectElement(faker.definitions.finance.currency, 'key');
+  return objectElement(getStringObject('finance.currency'), 'key') as string;
 }
 
 /**
@@ -135,8 +135,12 @@ export function currencyName(): string {
 export function currencySymbol(): string {
   let symbol;
 
+  // TODO: can lead to endless loop when locale does not specify a currency with a symbol
   while (!symbol) {
-    symbol = objectElement(faker.definitions.finance.currency)['symbol'];
+    const definition = objectElement(getStringObject('finance.currency')) as {
+      [k: string]: string;
+    };
+    symbol = definition['symbol'];
   }
   return symbol;
 }
@@ -163,11 +167,12 @@ export function bitcoinAddress(): string {
  * @param {string} provider | scheme
  */
 export function creditCardNumber(provider = ''): string {
-  let format = '',
-    formats: string[];
-  const localeFormat = faker.definitions.finance.credit_card;
+  let format = '';
+
+  const localeFormat = getDefinition('finance.credit_card') as { [k: string]: string[] };
+
   if (provider in localeFormat) {
-    formats = localeFormat[provider]; // there chould be multiple formats
+    const formats = localeFormat[provider]; // there chould be multiple formats
     if (typeof formats === 'string') {
       format = formats;
     } else {
@@ -182,7 +187,7 @@ export function creditCardNumber(provider = ''): string {
       format = localeFormat;
     } else if (typeof localeFormat === 'object') {
       // Credit cards are in a object structure
-      formats = objectElement(localeFormat, 'value'); // There chould be multiple formats
+      const formats = objectElement(localeFormat) as string[]; // There chould be multiple formats
       if (typeof formats === 'string') {
         format = formats;
       } else {

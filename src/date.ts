@@ -3,9 +3,8 @@
  * @module date
  */
 
+import { getString, getStringArray } from 'definitions';
 import { arrayElement, number } from 'random';
-
-declare const faker: { definitions: any };
 
 /**
  * past
@@ -134,11 +133,11 @@ export function month(options: { abbr?: string; context?: boolean } = {}): strin
   if (options.abbr) {
     style = 'abbr';
   }
-  if (options.context && typeof faker.definitions.date.month[style + '_context'] !== 'undefined') {
+  if (options.context && typeof getString(`date.month.${style}_context`) !== 'undefined') {
     style += '_context';
   }
 
-  const source = faker.definitions.date.month[style];
+  const source = getStringArray(`date.month.${style}`);
 
   return arrayElement(source);
 }
@@ -154,14 +153,11 @@ export function weekday(options: { abbr?: string; context?: boolean } = {}): str
   if (options.abbr) {
     style = 'abbr';
   }
-  if (
-    options.context &&
-    typeof faker.definitions.date.weekday[style + '_context'] !== 'undefined'
-  ) {
+  if (options.context && typeof getString(`date.weekday.${style}_context`) !== 'undefined') {
     style += '_context';
   }
 
-  const source = faker.definitions.date.weekday[style];
+  const source = getStringArray(`date.weekday.${style}`);
 
   return arrayElement(source);
 }

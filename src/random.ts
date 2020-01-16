@@ -122,7 +122,7 @@ export function arrayElements<T>(array: T[], count: number): T[] {
 export function objectElement<T extends {}, K extends keyof T>(
   object: T,
   field?: string
-): K | T[K] {
+): K | T[K] | T {
   const array = Object.keys(object) as K[];
   const key = arrayElement(array);
 

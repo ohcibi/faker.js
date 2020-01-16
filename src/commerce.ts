@@ -3,9 +3,8 @@
  * @module commerce
  */
 
+import { getStringArray } from 'definitions';
 import { arrayElement, number } from 'random';
-
-declare const faker: { definitions: any };
 
 /**
  * color
@@ -13,7 +12,7 @@ declare const faker: { definitions: any };
  * @method faker.commerce.color
  */
 export function color(): string {
-  return arrayElement(faker.definitions.commerce.color);
+  return arrayElement(getStringArray('commerce.color'));
 }
 
 /**
@@ -22,7 +21,7 @@ export function color(): string {
  * @method faker.commerce.department
  */
 export function department(): string {
-  return arrayElement(faker.definitions.commerce.department);
+  return arrayElement(getStringArray('commerce.department'));
 }
 
 /**
@@ -31,7 +30,7 @@ export function department(): string {
  * @method faker.commerce.productAdjective
  */
 export function productAdjective(): string {
-  return arrayElement(faker.definitions.commerce.product_name.adjective);
+  return arrayElement(getStringArray('commerce.product_name.adjective'));
 }
 
 /**
@@ -40,7 +39,7 @@ export function productAdjective(): string {
  * @method faker.commerce.productMaterial
  */
 export function productMaterial(): string {
-  return arrayElement(faker.definitions.commerce.product_name.material);
+  return arrayElement(getStringArray('commerce.product_name.material'));
 }
 
 /**
@@ -49,7 +48,7 @@ export function productMaterial(): string {
  * @method faker.commerce.product
  */
 export function product(): string {
-  return arrayElement(faker.definitions.commerce.product_name.product);
+  return arrayElement(getStringArray('commerce.product_name.product'));
 }
 
 /**

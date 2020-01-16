@@ -3,9 +3,8 @@
  * @module system
  */
 
+import { getDefinition, getString, getStringArray } from 'definitions';
 import { arrayElement, number, words } from 'random';
-
-declare const faker: { definitions: any; fake: (arg0: string) => string };
 
 /**
  * fileExt
@@ -15,7 +14,13 @@ declare const faker: { definitions: any; fake: (arg0: string) => string };
  */
 export function fileExt(mimeType = ''): string {
   const exts: string[] = [];
-  const mimes = faker.definitions.system.mimeTypes;
+  const mimes = getDefinition('system.mimeTypes') as {
+    [k: string]: {
+      source: string;
+      compressible?: boolean;
+      extensions?: string[];
+    };
+  };
 
   // get specific ext by mime-type
   if (typeof mimes[mimeType] === 'object') {
@@ -92,7 +97,7 @@ export function commonFileName(ext: string): string {
  * @method faker.system.mimeType
  */
 export function mimeType(): string {
-  return arrayElement(Object.keys(faker.definitions.system.mimeTypes));
+  return arrayElement(Object.keys(getString('system.mimeTypes')));
 }
 
 /**
@@ -112,7 +117,7 @@ export function commonFileType(): string {
  */
 export function fileType(): string {
   const types: string[] = [];
-  const mimes = faker.definitions.system.mimeTypes;
+  const mimes = getString('system.mimeTypes');
   Object.keys(mimes).forEach(function(m) {
     const parts = m.split('/');
     if (types.indexOf(parts[0]) === -1) {
@@ -128,7 +133,7 @@ export function fileType(): string {
  * @method faker.system.directoryPath
  */
 export function directoryPath(): string {
-  const paths = faker.definitions.system.directoryPaths;
+  const paths = getString('system.directoryPaths');
   return arrayElement(paths);
 }
 

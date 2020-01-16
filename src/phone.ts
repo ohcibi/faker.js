@@ -3,10 +3,9 @@
  * @module phone
  */
 
+import { getString, getStringArray } from 'definitions';
 import { replaceSymbolWithNumber } from 'helpers';
 import { arrayElement } from 'random';
-
-declare const faker: { definitions: any };
 
 /**
  * phoneFormats
@@ -14,7 +13,7 @@ declare const faker: { definitions: any };
  * @method faker.phone.phoneFormats
  */
 export function phoneFormats(): string {
-  return arrayElement(faker.definitions.phone_number.formats);
+  return arrayElement(getStringArray('phone_number.formats'));
 }
 
 /**
@@ -38,7 +37,7 @@ export function phoneNumber(format?: string): string {
  * @memberOf faker.phone
  */
 export function phoneNumberFormat(phoneFormatsArrayIndex = 0): string {
-  return replaceSymbolWithNumber(faker.definitions.phone_number.formats[phoneFormatsArrayIndex]);
+  return replaceSymbolWithNumber(getString('phone_number.formats')[phoneFormatsArrayIndex]);
 }
 
 export default {

@@ -1,9 +1,9 @@
-interface Definition {
-  [definition: string]: string;
-}
+type DefinitionObject = { [k: string]: Definition };
+
+type Definition = string | number | boolean | string[] | number[] | boolean[] | DefinitionObject;
 
 interface Locale {
-  [category: string]: Definition;
+  [definition: string]: Definition;
 }
 
 interface Registry {
@@ -30,41 +30,58 @@ export function deleteLocale(code: keyof Registry): void {
   delete registry[code];
 }
 
-export function getDefinition(
-  key: string,
-  defaultValue?: string
-): string | number | string[] | number[] {
-  return key.split('.').reduce((ret: Locale | Definition | string, subKey) => {
-    if (typeof ret === 'string') {
+export function getDefinition(key: string, defaultValue?: Definition): Definition {
+  return key.split('.').reduce((ret: Definition, subKey) => {
+    if (ret && !(ret as DefinitionObject)[subKey]) {
+      return (ret as DefinitionObject)[subKey];
+    }
+
+    if (ret) {
       return ret;
     }
 
-    if (!ret || !ret[subKey]) {
-      if (defaultValue || defaultValue === '') {
-        return defaultValue;
-      }
-
-      throw new Error(
-        `Key '${key}' not found in locale '${currentLocale}'. Try installing a locale that defines this key.`
-      );
+    if (defaultValue || defaultValue === '') {
+      return defaultValue;
     }
 
-    return ret[subKey];
-  }, registry[currentLocale]) as string;
+    throw new Error(
+      `Key '${key}' not found in locale '${currentLocale}'. Try installing a locale that defines this key.`
+    );
+  }, registry[currentLocale]);
 }
 
 export function getString(key: string, defaultValue?: string): string {
   return getDefinition(key, defaultValue) as string;
 }
 
-export function getNumber(key: string, defaultValue?: string): number {
+export function getNumber(key: string, defaultValue?: number): number {
   return getDefinition(key, defaultValue) as number;
 }
 
-export function getStringArray(key: string, defaultValue?: string): string[] {
+/**
+ * getStringArray
+ *
+ * foo bar baz biazasdfakj fda;sdj fa;k jdfa;j;sd fas
+ *
+ * @param {string} key
+ * @param {string} defaultValue foo
+ *
+ * @return {string} bar
+ */
+export function getStringArray(key: string, defaultValue?: string[]): string[] {
   return getDefinition(key, defaultValue) as string[];
 }
 
-export function getNumberArray(key: string, defaultValue?: string): number[] {
+export function getNumberArray(key: string, defaultValue?: number[]): number[] {
   return getDefinition(key, defaultValue) as number[];
+}
+
+// TODO: maybe these are unnecessary as one could always getDefinition('foo.bar.baz.boz'),
+// it might be better to allow returning `Category` in `getDefinition`
+export function getStringObject(key: string, defaultValue?: string): { [k: string]: string } {
+  return getDefinition(key, defaultValue) as { [k: string]: string };
+}
+
+export function getNumberObject(key: string, defaultValue?: string): { [k: string]: number } {
+  return getDefinition(key, defaultValue) as { [k: string]: number };
 }

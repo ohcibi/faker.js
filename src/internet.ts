@@ -3,12 +3,11 @@
  * @module internet
  */
 
+import { getStringArray } from 'definitions';
 import { slugify } from 'helpers';
 import { firstName as randomFirstName, lastName as randomLastName } from 'name';
 import { arrayElement, number } from 'random';
 import random_ua from 'random-ua';
-
-declare const faker: { definitions: any };
 
 /**
  * avatar
@@ -16,7 +15,7 @@ declare const faker: { definitions: any };
  * @method avatar
  */
 export function avatar(): string {
-  return arrayElement(faker.definitions.internet.avatar_uri);
+  return arrayElement(getStringArray('internet.avatar_uri'));
 }
 
 avatar.schema = {
@@ -82,7 +81,7 @@ userName.schema = {
  * @param {string} provider
  */
 export function email(firstName?: string, lastName?: string, provider?: string): string {
-  provider = provider || arrayElement(faker.definitions.internet.free_email);
+  provider = provider || arrayElement(getStringArray('internet.free_email'));
   return slugify(userName(firstName, lastName)) + '@' + provider;
 }
 
@@ -115,7 +114,7 @@ email.schema = {
  * @param {string} lastName
  */
 export function exampleEmail(firstName?: string, lastName?: string): string {
-  const provider: string = arrayElement(faker.definitions.internet.example_email);
+  const provider: string = arrayElement(getStringArray('internet.example_email'));
   return email(firstName, lastName, provider);
 }
 
@@ -140,7 +139,7 @@ protocol.schema = {
  * @method domainSuffix
  */
 export function domainSuffix(): string {
-  return arrayElement(faker.definitions.internet.domain_suffix);
+  return arrayElement(getStringArray('internet.domain_suffix'));
 }
 
 domainSuffix.schema = {
@@ -374,7 +373,6 @@ export function password(
    * Copyright(c) 2011-2013 Bermi Ferrer <bermi@bermilabs.com>
    * MIT Licensed
    */
-  const letter = /[a-zA-Z]$/;
   const vowel = /[aeiouAEIOU]$/;
   const consonant = /[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]$/;
   function _password(

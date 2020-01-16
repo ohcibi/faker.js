@@ -3,10 +3,9 @@
  * @module hacker
  */
 
+import { getStringArray } from 'definitions';
 import { arrayElement } from 'random';
 import { mustache } from 'helpers';
-
-declare const faker: { definitions: any };
 
 /**
  * abbreviation
@@ -14,7 +13,7 @@ declare const faker: { definitions: any };
  * @method faker.hacker.abbreviation
  */
 export function abbreviation(): string {
-  return arrayElement(faker.definitions.hacker.abbreviation);
+  return arrayElement(getStringArray('hacker.abbreviation'));
 }
 
 /**
@@ -23,7 +22,7 @@ export function abbreviation(): string {
  * @method faker.hacker.adjective
  */
 export function adjective(): string {
-  return arrayElement(faker.definitions.hacker.adjective);
+  return arrayElement(getStringArray('hacker.adjective'));
 }
 
 /**
@@ -32,7 +31,7 @@ export function adjective(): string {
  * @method faker.hacker.noun
  */
 export function noun(): string {
-  return arrayElement(faker.definitions.hacker.noun);
+  return arrayElement(getStringArray('hacker.noun'));
 }
 
 /**
@@ -41,7 +40,7 @@ export function noun(): string {
  * @method faker.hacker.verb
  */
 export function verb(): string {
-  return arrayElement(faker.definitions.hacker.verb);
+  return arrayElement(getStringArray('hacker.verb'));
 }
 
 /**
@@ -50,7 +49,7 @@ export function verb(): string {
  * @method faker.hacker.ingverb
  */
 export function ingverb(): string {
-  return arrayElement(faker.definitions.hacker.ingverb);
+  return arrayElement(getStringArray('hacker.ingverb'));
 }
 
 /**
@@ -60,7 +59,7 @@ export function ingverb(): string {
  */
 export function phrase(): string {
   const data = { abbreviation, adjective, ingverb, noun, verb };
-  const phrase: string = arrayElement(faker.definitions.hacker.phrase);
+  const phrase: string = arrayElement(getStringArray('hacker.phrase'));
   return mustache(phrase, data);
 }
 

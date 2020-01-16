@@ -3,9 +3,8 @@
  * @module name
  */
 
+import { getStringArray } from 'definitions';
 import { arrayElement, number } from 'random';
-
-declare const faker: { definitions: any; locales: any; locale: any };
 
 /**
  * firstName
@@ -15,27 +14,16 @@ declare const faker: { definitions: any; locales: any; locale: any };
  * @memberof faker.name
  */
 export function firstName(gender?: number): string {
-  if (
-    typeof faker.definitions.name.male_first_name !== 'undefined' &&
-    typeof faker.definitions.name.female_first_name !== 'undefined'
-  ) {
-    // some locale datasets ( like ru ) have first_name split by gender. since the name.first_name field does not exist in these datasets,
-    // we must randomly pick a name from either gender array so faker.name.firstName will return the correct locale data ( and not fallback )
-    if (typeof gender !== 'number') {
-      if (typeof faker.definitions.name.first_name === 'undefined') {
-        gender = number(1);
-      } else {
-        //Fall back to non-gendered names if they exist and gender wasn't specified
-        return arrayElement(faker.definitions.name.first_name);
-      }
-    }
-    if (gender === 0) {
-      return arrayElement(faker.definitions.name.male_first_name);
-    } else {
-      return arrayElement(faker.definitions.name.female_first_name);
-    }
+  if (typeof gender !== 'number') {
+    gender = number(1);
   }
-  return arrayElement(faker.definitions.name.first_name);
+
+  return arrayElement(
+    getStringArray(
+      `name.${gender === 0 ? 'male' : 'female'}_first_name`,
+      getStringArray('name.first_name')
+    )
+  );
 }
 
 /**
@@ -46,22 +34,16 @@ export function firstName(gender?: number): string {
  * @memberof faker.name
  */
 export function lastName(gender?: number): string {
-  if (
-    typeof faker.definitions.name.male_last_name !== 'undefined' &&
-    typeof faker.definitions.name.female_last_name !== 'undefined'
-  ) {
-    // some locale datasets ( like ru ) have last_name split by gender. i have no idea how last names can have genders, but also i do not speak russian
-    // see above comment of firstName method
-    if (typeof gender !== 'number') {
-      gender = number(1);
-    }
-    if (gender === 0) {
-      return arrayElement(faker.locales[faker.locale].name.male_last_name);
-    } else {
-      return arrayElement(faker.locales[faker.locale].name.female_last_name);
-    }
+  if (typeof gender !== 'number') {
+    gender = number(1);
   }
-  return arrayElement(faker.definitions.name.last_name);
+
+  return arrayElement(
+    getStringArray(
+      `name.${gender === 0 ? 'male' : 'female'}_last_name`,
+      getStringArray('name.last_name')
+    )
+  );
 }
 
 /**
@@ -72,20 +54,13 @@ export function lastName(gender?: number): string {
  * @memberof faker.name
  */
 export function prefix(gender?: number): string {
-  if (
-    typeof faker.definitions.name.male_prefix !== 'undefined' &&
-    typeof faker.definitions.name.female_prefix !== 'undefined'
-  ) {
-    if (typeof gender !== 'number') {
-      gender = number(1);
-    }
-    if (gender === 0) {
-      return arrayElement(faker.locales[faker.locale].name.male_prefix);
-    } else {
-      return arrayElement(faker.locales[faker.locale].name.female_prefix);
-    }
+  if (typeof gender !== 'number') {
+    gender = number(1);
   }
-  return arrayElement(faker.definitions.name.prefix);
+
+  return arrayElement(
+    getStringArray(`name.${gender === 0 ? 'male' : 'female'}_prefix`, getStringArray('name.prefix'))
+  );
 }
 
 /**
@@ -95,7 +70,7 @@ export function prefix(gender?: number): string {
  * @memberof faker.name
  */
 export function suffix(): string {
-  return arrayElement(faker.definitions.name.suffix);
+  return arrayElement(getStringArray('name.suffix'));
 }
 
 /**
@@ -139,7 +114,7 @@ export function findName(_firstName?: string, _lastName?: string, gender?: numbe
  * @memberof faker.name
  */
 export function jobDescriptor(): string {
-  return arrayElement(faker.definitions.name.title.descriptor);
+  return arrayElement(getStringArray('name.title.descriptor'));
 }
 
 /**
@@ -149,7 +124,7 @@ export function jobDescriptor(): string {
  * @memberof faker.name
  */
 export function jobArea(): string {
-  return arrayElement(faker.definitions.name.title.level);
+  return arrayElement(getStringArray('name.title.level'));
 }
 
 /**
@@ -159,7 +134,7 @@ export function jobArea(): string {
  * @memberof faker.name
  */
 export function jobType(): string {
-  return arrayElement(faker.definitions.name.title.job);
+  return arrayElement(getStringArray('name.title.job'));
 }
 
 /**
@@ -179,7 +154,7 @@ export function jobTitle(): string {
  * @memberof faker.name
  */
 export function gender(): string {
-  return arrayElement(faker.definitions.name.gender);
+  return arrayElement(getStringArray('name.gender'));
 }
 
 /**
@@ -189,9 +164,9 @@ export function gender(): string {
  * @memberof faker.name
  */
 export function title(): string {
-  const descriptor = arrayElement(faker.definitions.name.title.descriptor),
-    level = arrayElement(faker.definitions.name.title.level),
-    job = arrayElement(faker.definitions.name.title.job);
+  const descriptor = arrayElement(getStringArray('name.title.descriptor')),
+    level = arrayElement(getStringArray('name.title.level')),
+    job = arrayElement(getStringArray('name.title.job'));
 
   return descriptor + ' ' + level + ' ' + job;
 }

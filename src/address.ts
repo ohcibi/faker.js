@@ -3,11 +3,11 @@
  * @module address
  */
 
+import { getDefinition, getStringArray, getNumberObject } from 'definitions';
 import { replaceSymbols, replaceSymbolWithNumber } from 'helpers';
 import { firstName, lastName } from 'name';
 import { arrayElement, number } from 'random';
 
-declare const faker: { definitions: any };
 /**
  * Generates random zipcode from format. If format is not specified, the
  * locale's zip format is used.
@@ -18,11 +18,11 @@ declare const faker: { definitions: any };
 export function zipCode(format?: string): string {
   // if zip format is not specified, use the zip format defined for the locale
   if (typeof format === 'undefined') {
-    const localeFormat = faker.definitions.address.postcode;
+    const localeFormat = getDefinition('address.postcode');
     if (typeof localeFormat === 'string') {
       format = localeFormat;
     } else {
-      format = arrayElement(localeFormat);
+      format = arrayElement(localeFormat as string[]);
     }
   }
   return replaceSymbols(format);
@@ -39,7 +39,7 @@ export function zipCode(format?: string): string {
  * @param {String} state
  */
 export function zipCodeByState(state: string): string {
-  const zipRange = faker.definitions.address.postcode_by_state[state];
+  const zipRange = getNumberObject('address.postcode_by_state')[state];
   if (zipRange) {
     return `${number(zipRange)}`;
   }
@@ -51,7 +51,7 @@ export function zipCodeByState(state: string): string {
  * @method faker.address.cityPrefix
  */
 export function cityPrefix(): string {
-  return arrayElement(faker.definitions.address.city_prefix);
+  return arrayElement(getStringArray('address.city_prefix'));
 }
 
 /**
@@ -60,7 +60,7 @@ export function cityPrefix(): string {
  * @method faker.address.citySuffix
  */
 export function citySuffix(): string {
-  return arrayElement(faker.definitions.address.city_suffix);
+  return arrayElement(getStringArray('address.city_suffix'));
 }
 
 /**
@@ -69,7 +69,7 @@ export function citySuffix(): string {
  * @method faker.address.streetSuffix
  */
 export function streetSuffix(): string {
-  return arrayElement(faker.definitions.address.street_suffix);
+  return arrayElement(getStringArray('address.street_suffix'));
 }
 
 /**
@@ -78,7 +78,7 @@ export function streetSuffix(): string {
  * @method faker.address.streetPrefix
  */
 export function streetPrefix(): string {
-  return arrayElement(faker.definitions.address.street_prefix);
+  return arrayElement(getStringArray('address.street_prefix'));
 }
 
 /**
@@ -133,7 +133,7 @@ export function streetAddress(useFullAddress = false): string {
  * @method faker.address.county
  */
 export function county(): string {
-  return arrayElement(faker.definitions.address.county);
+  return arrayElement(getStringArray('address.county'));
 }
 
 /**
@@ -142,7 +142,7 @@ export function county(): string {
  * @method faker.address.country
  */
 export function country(): string {
-  return arrayElement(faker.definitions.address.country);
+  return arrayElement(getStringArray('address.country'));
 }
 
 /**
@@ -151,7 +151,7 @@ export function country(): string {
  * @method faker.address.countryCode
  */
 export function countryCode(): string {
-  return arrayElement(faker.definitions.address.country_code);
+  return arrayElement(getStringArray('address.country_code'));
 }
 
 /**
@@ -161,7 +161,7 @@ export function countryCode(): string {
  * @param {Boolean} useAbbr
  */
 export function state(): string {
-  return arrayElement(faker.definitions.address.state);
+  return arrayElement(getStringArray('address.state'));
 }
 
 /**
@@ -170,7 +170,7 @@ export function state(): string {
  * @method faker.address.stateAbbr
  */
 export function stateAbbr(): string {
-  return arrayElement(faker.definitions.address.state_abbr);
+  return arrayElement(getStringArray('address.state_abbr'));
 }
 
 /**
@@ -217,9 +217,9 @@ export function longitude(max = 180, min = -180, precision = 4): number {
  */
 export function direction(useAbbr = false): string {
   if (!useAbbr) {
-    return arrayElement(faker.definitions.address.direction);
+    return arrayElement(getStringArray('address.direction'));
   }
-  return arrayElement(faker.definitions.address.direction_abbr);
+  return arrayElement(getStringArray('address.direction_abbr'));
 }
 
 direction.schema = {
@@ -235,9 +235,9 @@ direction.schema = {
  */
 export function cardinalDirection(useAbbr = false): string {
   if (!useAbbr) {
-    return arrayElement(faker.definitions.address.direction.slice(0, 4));
+    return arrayElement(getStringArray('address.direction').slice(0, 4));
   }
-  return arrayElement(faker.definitions.address.direction_abbr.slice(0, 4));
+  return arrayElement(getStringArray('address.direction_abbr').slice(0, 4));
 }
 
 cardinalDirection.schema = {
@@ -253,9 +253,9 @@ cardinalDirection.schema = {
  */
 export function ordinalDirection(useAbbr = false): string {
   if (!useAbbr) {
-    return arrayElement(faker.definitions.address.direction.slice(4, 8));
+    return arrayElement(getStringArray('address.direction').slice(4, 8));
   }
-  return arrayElement(faker.definitions.address.direction_abbr.slice(4, 8));
+  return arrayElement(getStringArray('address.direction_abbr').slice(4, 8));
 }
 
 ordinalDirection.schema = {

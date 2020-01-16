@@ -3,10 +3,9 @@
  * @module company
  */
 
+import { getStringArray } from 'definitions';
+import { lastName } from 'name';
 import { arrayElement } from 'random';
-
-declare const faker: { definitions: any };
-declare function f(string: string): string;
 
 /**
  * suffixes
@@ -15,25 +14,7 @@ declare function f(string: string): string;
  */
 export function suffixes(): string[] {
   // Don't want the source array exposed to modification, so return a copy
-  return faker.definitions.company.suffix.slice(0);
-}
-
-/**
- * companyName
- *
- * @method faker.company.companyName
- * @param {string} format
- */
-export function companyName(format: string): string {
-  if (!format) {
-    format = arrayElement([
-      '{{name.lastName}} {{company.companySuffix}}',
-      '{{name.lastName}} - {{name.lastName}}',
-      '{{name.lastName}}, {{name.lastName}} and {{name.lastName}}'
-    ]);
-  }
-
-  return f(format);
+  return [...getStringArray('company.suffix')];
 }
 
 /**
@@ -46,23 +27,16 @@ export function companySuffix(): string {
 }
 
 /**
- * catchPhrase
+ * companyName
  *
- * @method faker.company.catchPhrase
+ * @method faker.company.companyName
  */
-export function catchPhrase(): string {
-  return f(
-    '{{company.catchPhraseAdjective}} {{company.catchPhraseDescriptor}} {{company.catchPhraseNoun}}'
-  );
-}
-
-/**
- * bs
- *
- * @method faker.company.bs
- */
-export function bs(): string {
-  return f('{{company.bsBuzz}} {{company.bsAdjective}} {{company.bsNoun}}');
+export function companyName(): string {
+  return arrayElement([
+    (): string => `${lastName()} ${companySuffix()}`,
+    (): string => `${lastName()} - ${lastName()}`,
+    (): string => `${lastName()}, ${lastName()} and ${lastName()}`
+  ])();
 }
 
 /**
@@ -71,7 +45,7 @@ export function bs(): string {
  * @method faker.company.catchPhraseAdjective
  */
 export function catchPhraseAdjective(): string {
-  return arrayElement(faker.definitions.company.adjective);
+  return arrayElement(getStringArray('company.adjective'));
 }
 
 /**
@@ -80,7 +54,7 @@ export function catchPhraseAdjective(): string {
  * @method faker.company.catchPhraseDescriptor
  */
 export function catchPhraseDescriptor(): string {
-  return arrayElement(faker.definitions.company.descriptor);
+  return arrayElement(getStringArray('company.descriptor'));
 }
 
 /**
@@ -89,7 +63,16 @@ export function catchPhraseDescriptor(): string {
  * @method faker.company.catchPhraseNoun
  */
 export function catchPhraseNoun(): string {
-  return arrayElement(faker.definitions.company.noun);
+  return arrayElement(getStringArray('company.noun'));
+}
+
+/**
+ * catchPhrase
+ *
+ * @method faker.company.catchPhrase
+ */
+export function catchPhrase(): string {
+  return `${catchPhraseAdjective()} ${catchPhraseDescriptor()} ${catchPhraseNoun()}`;
 }
 
 /**
@@ -98,7 +81,7 @@ export function catchPhraseNoun(): string {
  * @method faker.company.bsAdjective
  */
 export function bsAdjective(): string {
-  return arrayElement(faker.definitions.company.bs_adjective);
+  return arrayElement(getStringArray('company.bs_adjective'));
 }
 
 /**
@@ -107,7 +90,7 @@ export function bsAdjective(): string {
  * @method faker.company.bsBuzz
  */
 export function bsBuzz(): string {
-  return arrayElement(faker.definitions.company.bs_verb);
+  return arrayElement(getStringArray('company.bs_verb'));
 }
 
 /**
@@ -116,7 +99,16 @@ export function bsBuzz(): string {
  * @method faker.company.bsNoun
  */
 export function bsNoun(): string {
-  return arrayElement(faker.definitions.company.bs_noun);
+  return arrayElement(getStringArray('company.bs_noun'));
+}
+
+/**
+ * bs
+ *
+ * @method faker.company.bs
+ */
+export function bs(): string {
+  return `${bsBuzz()} ${bsAdjective()} ${bsNoun()}`;
 }
 
 export default {

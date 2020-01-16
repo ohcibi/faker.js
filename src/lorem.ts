@@ -3,10 +3,9 @@
  * @module lorem
  */
 
+import { getStringArray } from 'definitions';
 import { slugify } from 'helpers';
 import { arrayElement, number } from 'random';
-
-declare const faker: { definitions: any };
 
 /**
  * word
@@ -14,7 +13,7 @@ declare const faker: { definitions: any };
  * @method faker.lorem.word
  */
 export function word(): string {
-  return arrayElement(faker.definitions.lorem.words);
+  return arrayElement(getStringArray('lorem.words'));
 }
 
 /**

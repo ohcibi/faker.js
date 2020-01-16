@@ -3,7 +3,6 @@ import commerce from 'commerce';
 import company from 'company';
 import database from 'database';
 import date from 'date';
-import fake from 'fake';
 import finance from 'finance';
 import git from 'git';
 import hacker from 'hacker';
@@ -25,7 +24,6 @@ export default {
   company,
   database,
   date,
-  fake,
   finance,
   git,
   hacker,
